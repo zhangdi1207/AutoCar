@@ -1,0 +1,208 @@
+C51 COMPILER V9.00   RECEIVE                                                               01/06/2017 15:18:46 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE RECEIVE
+OBJECT MODULE PLACED IN receive.OBJ
+COMPILER INVOKED BY: C:\Keil4\C51\BIN\C51.EXE receive.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #define uchar unsigned char
+   3          #define uint unsigned int
+   4          //define wheel direction leftfront/leftback/rightfront/rightback
+   5          sbit LF=P2^0;
+   6          sbit LB=P2^1;
+   7          sbit RF=P2^2;
+   8          sbit RB=P2^3;
+   9          //for ultrasonic
+  10          sbit IN=P2^4;
+  11          sbit test=P2^5;
+  12          sbit OUT=P3^2;
+  13          //计数器起止位
+  14          uchar th=0x00;
+  15          uchar tl=0x00;
+  16          uchar serial_num;
+  17          uchar interLoop=30;
+  18          //判断离墙距离是否到警戒,小于8.8cm，alertDistance=1,distanceFlag判断测距是否成功，distanceTimeFlag判断计数
+             -器读数是否成功
+  19          bit alertDistance=0;
+  20          bit ultrasonicFlag=0;     //仪器接收到信号
+  21          bit TF1Flag=0;    //计数器溢出标志
+  22          bit TF0Flag=0;
+  23          
+  24          void init_bluetooth()
+  25          {
+  26   1              IE=0x90;
+  27   1              TMOD=0x20;
+  28   1              SCON=0x50;
+  29   1              PCON=0x00;
+  30   1              TH1=0xfd;
+  31   1              TL1=0xfd;
+  32   1              TR1=1;
+  33   1              REN=1;
+  34   1              
+  35   1              serial_num=0;
+  36   1      }
+  37          
+  38          void ahead()
+  39          {
+  40   1              P2=0x05;
+  41   1      }
+  42          void back()
+  43          {
+  44   1              P2=0x0a;        
+  45   1      }
+  46          void turnLeft()
+  47          {
+  48   1              P2=0x06;
+  49   1      }
+  50          void turnRight()
+  51          {
+  52   1              P2=0x09;
+  53   1      }
+  54          void stop()
+C51 COMPILER V9.00   RECEIVE                                                               01/06/2017 15:18:46 PAGE 2   
+
+  55          {
+  56   1              P2=0;
+  57   1      }
+  58          
+  59          void getBluetooth()
+  60          {
+  61   1              init_bluetooth();
+  62   1              if(serial_num=='a' ||serial_num=='s'||serial_num=='d'||serial_num=='w'||serial_num=='q')
+  63   1              {
+  64   2                      switch(serial_num)
+  65   2                      {
+  66   3                              case 'w':
+  67   3                              {
+  68   4                                      if(alertDistance==0)
+  69   4                                              ahead();
+  70   4                                      break;
+  71   4                              }
+  72   3                              case 's':back();break;
+  73   3                              case 'a':turnLeft();break;
+  74   3                              case 'd':turnRight();break;
+  75   3                              case 'q':stop();break;
+  76   3                      }
+  77   2                      serial_num=0;                   
+  78   2              }
+  79   1      }
+  80          //////////////////////////////////////////////////
+  81          void delay20us()
+  82          {
+  83   1              uchar i;
+  84   1              for(i=0;i<20;i++);
+  85   1      }
+  86          
+  87          void init_ultrasonic()
+  88          {
+  89   1              IN=0;   
+  90   1              TMOD=0x19;
+  91   1              TCON=0x11;
+  92   1              TH0=th;
+  93   1              TL0=tl;
+  94   1              TH1=th;
+  95   1              TL1=tl;
+  96   1              alertDistance=0;
+  97   1              ultrasonicFlag=0;
+  98   1              TF0Flag=0;
+  99   1              TF1Flag=0;
+ 100   1              IE=0x8b;        
+ 101   1      }
+ 102          
+ 103          void getDistance()
+ 104          {
+ 105   1              init_ultrasonic();
+ 106   1              IN=1;
+ 107   1              delay20us();
+ 108   1              IN=0;
+ 109   1              TR1=1;
+ 110   1              
+ 111   1              while((ultrasonicFlag|TF1Flag|TF0Flag)==0);
+ 112   1              test=TF0Flag;
+ 113   1      }
+ 114          
+ 115          void main()
+ 116          {       
+C51 COMPILER V9.00   RECEIVE                                                               01/06/2017 15:18:46 PAGE 3   
+
+ 117   1              uchar a;
+ 118   1              OUT=0;
+ 119   1              while(1)
+ 120   1              {
+ 121   2                      getDistance();
+ 122   2                      for(a=interLoop;a>0;a--)
+ 123   2                              getBluetooth();
+ 124   2              }
+ 125   1      }
+ 126          
+ 127          
+ 128          /*
+ 129          void main()
+ 130          {
+ 131                  init();
+ 132                  P2=0;
+ 133                  while(1)
+ 134                  {
+ 135                          if(serial_num=='w')
+ 136                          P2=1;
+ 137                          else P2=2;
+ 138                  }
+ 139          }       //*/
+ 140          
+ 141          //外部计数器0计数，判断距离是否小于8.8cm
+ 142          void exterInt0() interrupt 0  using 1
+ 143          {
+ 144   1              EA=0;
+ 145   1              if(TH0<0x02)
+ 146   1                      alertDistance=1;
+ 147   1              ultrasonicFlag=1;
+ 148   1      }
+ 149          //计数器0/1溢出，收到返回信号但时间太长
+ 150          void timer0() interrupt 1 using 2
+ 151          {
+ 152   1              EA=0;
+ 153   1              TH0=th;
+ 154   1              TL0=tl;
+ 155   1              TF0Flag=1;
+ 156   1      
+ 157   1      }
+ 158          void timer1() interrupt 3       using 3
+ 159          {
+ 160   1              EA=0;
+ 161   1              TH1=th;
+ 162   1              TL1=tl;
+ 163   1              TF1Flag=1;      
+ 164   1      }
+ 165          
+ 166          
+ 167          
+ 168          void serial() interrupt 4 using 2
+ 169          {
+ 170   1              EA=0;
+ 171   1              if(RI==1)
+ 172   1              {
+ 173   2                      serial_num=SBUF;
+ 174   2                      RI=0;
+ 175   2              }
+ 176   1              if(TI==1)
+ 177   1                      TI=0;
+ 178   1      }
+C51 COMPILER V9.00   RECEIVE                                                               01/06/2017 15:18:46 PAGE 4   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    273    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,314 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        01/06/2017  15:18:46  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL4\C51\BIN\BL51.EXE receive.obj TO receive RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  receive.obj (RECEIVE)
+  C:\KEIL4\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL4\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  receive (RECEIVE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?RECEIVE
+                    000CH     0014H                  *** GAP ***
+            BIT     0020H.0   0000H.4   UNIT         ?BI?RECEIVE
+                    0020H.4   0000H.4                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     0004H     UNIT         ?PR?AHEAD?RECEIVE
+                    000AH     0001H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     000BH     UNIT         ?PR?TIMER0?RECEIVE
+                    0019H     0002H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+            CODE    001EH     0004H     UNIT         ?PR?BACK?RECEIVE
+                    0022H     0001H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     008CH     UNIT         ?C_C51STARTUP
+            CODE    00B2H     0055H     UNIT         ?PR?GETBLUETOOTH?RECEIVE
+            CODE    0107H     0020H     UNIT         ?PR?INIT_ULTRASONIC?RECEIVE
+            CODE    0127H     0019H     UNIT         ?PR?INIT_BLUETOOTH?RECEIVE
+            CODE    0140H     0019H     UNIT         ?PR?GETDISTANCE?RECEIVE
+            CODE    0159H     0016H     UNIT         ?PR?EXTERINT0?RECEIVE
+            CODE    016FH     0013H     UNIT         ?PR?MAIN?RECEIVE
+            CODE    0182H     0012H     UNIT         ?C_INITSEG
+            CODE    0194H     0010H     UNIT         ?PR?SERIAL?RECEIVE
+            CODE    01A4H     000BH     UNIT         ?PR?TIMER1?RECEIVE
+            CODE    01AFH     0007H     UNIT         ?PR?DELAY20US?RECEIVE
+            CODE    01B6H     0004H     UNIT         ?PR?TURNLEFT?RECEIVE
+            CODE    01BAH     0004H     UNIT         ?PR?TURNRIGHT?RECEIVE
+            CODE    01BEH     0004H     UNIT         ?PR?STOP?RECEIVE
+
+
+
+OVERLAY MAP OF MODULE:   receive (RECEIVE)
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/06/2017  15:18:46  PAGE 2
+
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?RECEIVE
+  +--> ?C_INITSEG
+
+?PR?MAIN?RECEIVE
+  +--> ?PR?GETDISTANCE?RECEIVE
+  +--> ?PR?GETBLUETOOTH?RECEIVE
+
+?PR?GETDISTANCE?RECEIVE
+  +--> ?PR?INIT_ULTRASONIC?RECEIVE
+  +--> ?PR?DELAY20US?RECEIVE
+
+?PR?GETBLUETOOTH?RECEIVE
+  +--> ?PR?INIT_BLUETOOTH?RECEIVE
+  +--> ?PR?AHEAD?RECEIVE
+  +--> ?PR?BACK?RECEIVE
+  +--> ?PR?TURNLEFT?RECEIVE
+  +--> ?PR?TURNRIGHT?RECEIVE
+  +--> ?PR?STOP?RECEIVE
+
+
+
+SYMBOL TABLE OF MODULE:  receive (RECEIVE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        RECEIVE
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:00B2H         PUBLIC        getBluetooth
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:0194H         PUBLIC        serial
+  B:00A8H.7       PUBLIC        EA
+  C:0159H         PUBLIC        exterInt0
+  D:00A8H         PUBLIC        IE
+  C:001EH         PUBLIC        back
+  B:00A0H.4       PUBLIC        IN
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  C:016FH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        serial_num
+  D:0009H         PUBLIC        interLoop
+  B:00A0H.5       PUBLIC        test
+  B:0020H.0       PUBLIC        TF0Flag
+  C:01BEH         PUBLIC        stop
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/06/2017  15:18:46  PAGE 3
+
+
+  B:0020H.1       PUBLIC        TF1Flag
+  B:0020H.2       PUBLIC        ultrasonicFlag
+  B:0020H.3       PUBLIC        alertDistance
+  D:008CH         PUBLIC        TH0
+  C:01BAH         PUBLIC        turnRight
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  C:000EH         PUBLIC        timer0
+  C:01A4H         PUBLIC        timer1
+  B:0088H.6       PUBLIC        TR1
+  C:01B6H         PUBLIC        turnLeft
+  D:000AH         PUBLIC        th
+  C:01AFH         PUBLIC        delay20us
+  D:000BH         PUBLIC        tl
+  C:0107H         PUBLIC        init_ultrasonic
+  B:0098H.4       PUBLIC        REN
+  D:00C8H         PUBLIC        T2CON
+  C:0140H         PUBLIC        getDistance
+  C:0127H         PUBLIC        init_bluetooth
+  C:0006H         PUBLIC        ahead
+  B:00B0H.2       PUBLIC        OUT
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_BLUETOOTH
+  C:0127H         LINE#         24
+  C:0127H         LINE#         25
+  C:0127H         LINE#         26
+  C:012AH         LINE#         27
+  C:012DH         LINE#         28
+  C:0130H         LINE#         29
+  C:0133H         LINE#         30
+  C:0136H         LINE#         31
+  C:0139H         LINE#         32
+  C:013BH         LINE#         33
+  C:013DH         LINE#         35
+  C:013FH         LINE#         36
+  -------         ENDPROC       INIT_BLUETOOTH
+  -------         PROC          AHEAD
+  C:0006H         LINE#         38
+  C:0006H         LINE#         39
+  C:0006H         LINE#         40
+  C:0009H         LINE#         41
+  -------         ENDPROC       AHEAD
+  -------         PROC          BACK
+  C:001EH         LINE#         42
+  C:001EH         LINE#         43
+  C:001EH         LINE#         44
+  C:0021H         LINE#         45
+  -------         ENDPROC       BACK
+  -------         PROC          TURNLEFT
+  C:01B6H         LINE#         46
+  C:01B6H         LINE#         47
+  C:01B6H         LINE#         48
+  C:01B9H         LINE#         49
+  -------         ENDPROC       TURNLEFT
+  -------         PROC          TURNRIGHT
+  C:01BAH         LINE#         50
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/06/2017  15:18:46  PAGE 4
+
+
+  C:01BAH         LINE#         51
+  C:01BAH         LINE#         52
+  C:01BDH         LINE#         53
+  -------         ENDPROC       TURNRIGHT
+  -------         PROC          STOP
+  C:01BEH         LINE#         54
+  C:01BEH         LINE#         55
+  C:01BEH         LINE#         56
+  C:01C1H         LINE#         57
+  -------         ENDPROC       STOP
+  -------         PROC          GETBLUETOOTH
+  C:00B2H         LINE#         59
+  C:00B2H         LINE#         60
+  C:00B2H         LINE#         61
+  C:00B5H         LINE#         62
+  C:00D3H         LINE#         63
+  C:00D3H         LINE#         64
+  C:00E9H         LINE#         65
+  C:00E9H         LINE#         66
+  C:00E9H         LINE#         67
+  C:00E9H         LINE#         68
+  C:00ECH         LINE#         69
+  C:00EFH         LINE#         70
+  C:00F1H         LINE#         71
+  C:00F1H         LINE#         72
+  C:00F6H         LINE#         73
+  C:00FBH         LINE#         74
+  C:0100H         LINE#         75
+  C:0103H         LINE#         76
+  C:0103H         LINE#         77
+  C:0106H         LINE#         78
+  C:0106H         LINE#         79
+  -------         ENDPROC       GETBLUETOOTH
+  -------         PROC          DELAY20US
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:01AFH         LINE#         81
+  C:01AFH         LINE#         82
+  C:01AFH         LINE#         84
+  C:01B5H         LINE#         85
+  -------         ENDPROC       DELAY20US
+  -------         PROC          INIT_ULTRASONIC
+  C:0107H         LINE#         87
+  C:0107H         LINE#         88
+  C:0107H         LINE#         89
+  C:0109H         LINE#         90
+  C:010CH         LINE#         91
+  C:010FH         LINE#         92
+  C:0112H         LINE#         93
+  C:0115H         LINE#         94
+  C:0118H         LINE#         95
+  C:011BH         LINE#         96
+  C:011DH         LINE#         97
+  C:011FH         LINE#         98
+  C:0121H         LINE#         99
+  C:0123H         LINE#         100
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/06/2017  15:18:46  PAGE 5
+
+
+  C:0126H         LINE#         101
+  -------         ENDPROC       INIT_ULTRASONIC
+  -------         PROC          GETDISTANCE
+  C:0140H         LINE#         103
+  C:0140H         LINE#         104
+  C:0140H         LINE#         105
+  C:0143H         LINE#         106
+  C:0145H         LINE#         107
+  C:0148H         LINE#         108
+  C:014AH         LINE#         109
+  C:014CH         LINE#         111
+  C:0154H         LINE#         112
+  C:0158H         LINE#         113
+  -------         ENDPROC       GETDISTANCE
+  -------         PROC          MAIN
+  -------         DO            
+  D:0007H         SYMBOL        a
+  -------         ENDDO         
+  C:016FH         LINE#         115
+  C:016FH         LINE#         116
+  C:016FH         LINE#         118
+  C:0171H         LINE#         119
+  C:0171H         LINE#         120
+  C:0171H         LINE#         121
+  C:0174H         LINE#         122
+  C:017CH         LINE#         123
+  -------         ENDPROC       MAIN
+  -------         PROC          EXTERINT0
+  C:0159H         LINE#         142
+  C:015DH         LINE#         144
+  C:015FH         LINE#         145
+  C:0166H         LINE#         146
+  C:0168H         LINE#         147
+  C:016AH         LINE#         148
+  -------         ENDPROC       EXTERINT0
+  -------         PROC          TIMER0
+  C:000EH         LINE#         150
+  C:000EH         LINE#         152
+  C:0010H         LINE#         153
+  C:0013H         LINE#         154
+  C:0016H         LINE#         155
+  C:0018H         LINE#         157
+  -------         ENDPROC       TIMER0
+  -------         PROC          TIMER1
+  C:01A4H         LINE#         158
+  C:01A4H         LINE#         160
+  C:01A6H         LINE#         161
+  C:01A9H         LINE#         162
+  C:01ACH         LINE#         163
+  C:01AEH         LINE#         164
+  -------         ENDPROC       TIMER1
+  -------         PROC          SERIAL
+  C:0194H         LINE#         168
+  C:0194H         LINE#         170
+  C:0196H         LINE#         171
+  C:0199H         LINE#         172
+  C:0199H         LINE#         173
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/06/2017  15:18:46  PAGE 6
+
+
+  C:019CH         LINE#         174
+  C:019EH         LINE#         175
+  C:019EH         LINE#         176
+  C:01A1H         LINE#         177
+  C:01A3H         LINE#         178
+  -------         ENDPROC       SERIAL
+  -------         ENDMOD        RECEIVE
+
+Program Size: data=13.4 xdata=0 code=446
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

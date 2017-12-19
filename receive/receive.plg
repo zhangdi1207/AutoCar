@@ -1,0 +1,23 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+F:\c51\bluetooth\receive\receive.uvproj
+Project File Date:  01/04/2017
+
+<h2>Output:</h2>
+Build target '目标 1'
+compiling receive.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GETDISTANCE?RECEIVE
+Program Size: data=13.4 xdata=0 code=443
+creating hex file from "receive"...
+"receive" - 0 Error(s), 1 Warning(s).
+Build target '目标 1'
+compiling receive.c...
+linking...
+Program Size: data=13.4 xdata=0 code=446
+creating hex file from "receive"...
+"receive" - 0 Error(s), 0 Warning(s).
